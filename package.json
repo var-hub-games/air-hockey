@@ -1,0 +1,52 @@
+{
+  "name": "@var-hub-games/air-hockey",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "vite --config ./vite.config.ts --host",
+    "build": "vite build --config ./vite.config.ts",
+    "preview": "vite preview --config ./vite.config.ts",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/var-hub-games/air-hockey.git"
+  },
+  "keywords": [
+    "varhub"
+  ],
+  "author": "dpohvar@gmail.com",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/var-hub-games/air-hockey/issues"
+  },
+  "homepage": "https://github.com/var-hub-games/air-hockey#readme",
+  "dependencies": {
+    "@flinbein/varhub-web-client": "github:flinbein/varhub-web-client",
+    "@types/react": "npm:types-react@experimental",
+    "@types/react-dom": "npm:types-react-dom@experimental",
+    "classnames": "^2.5.1",
+    "pixi.js": "^8.5.2",
+    "qrcode": "^1.5.4",
+    "react": "^0.0.0-experimental-e1ef8c95-20241115",
+    "react-dom": "^0.0.0-experimental-e1ef8c95-20241115"
+  },
+  "devDependencies": {
+    "@dimforge/rapier2d-compat": "^0.14.0",
+    "@flinbein/rollup-plugin-varhub-bundle": "github:flinbein/rollup-plugin-varhub-bundle",
+    "@types/node": "^22.9.0",
+    "@types/qrcode": "^1.5.5",
+    "@types/react": "npm:types-react@experimental",
+    "@types/react-dom": "npm:types-react-dom@experimental",
+    "cross-env": "^7.0.3",
+    "esbuild-plugin-wasm": "^1.1.0",
+    "typescript": "^5.6.3",
+    "vite": "^5.4.11"
+  },
+  "overrides": {
+    "@types/react": "npm:types-react@experimental",
+    "@types/react-dom": "npm:types-react-dom@experimental"
+  }
+}
