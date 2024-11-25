@@ -16,6 +16,7 @@ export const BoardGraphics: FC<{appPromise: ReturnType<typeof GamePixiApp>}> = (
 	const app = use(appPromise);
 	const [div, setDiv] = useState<HTMLDivElement|null>(null);
 	useEffect(() => {
+		void navigator.wakeLock.request("screen");
 		if (div) div.appendChild(app.canvas);
 	}, [div]);
 	return <div className="canvas-box" ref={setDiv} />

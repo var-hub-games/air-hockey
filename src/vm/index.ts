@@ -1,5 +1,21 @@
 import { Board } from "./Board.js";
 import RPCSource from "varhub:rpc";
+import Players, { Player } from "varhub:players";
+import room from "varhub:room";
+
+
+const players = new Players(room, (con, ...args) => String(args[0]));
+
+players.get("DPOHVAR")?.setTeam("red");
+updateTeamsState();
+
+function updateTeamsState(){
+	const teamData = {} as Record<string, string>;
+	for (let player of players) {
+		if (player.team) teamData[player.name] = player.team;
+	}
+	RPCSource.default.setState(state => ({...state, teamData}))
+}
 
 //   ,----------------------,    field:  120 cm х 60 cm (20+20+20)
 //   |          |           |    ball:   R = 5cm

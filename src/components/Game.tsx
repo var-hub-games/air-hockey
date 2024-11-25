@@ -1,15 +1,11 @@
 import { FC, experimental_useEffectEvent as useEffectEvent, useState } from "react";
-import { type VarhubClient } from "@flinbein/varhub-web-client";
 import { GameRPC } from "../types.js";
 import { Board } from "./Board.js";
 import { Control } from "./Control.js";
 
-navigator.wakeLock.request("screen");
-
 async function getPermissions(){
-	if ( typeof( DeviceMotionEvent ) !== "undefined" && typeof( (DeviceMotionEvent as any).requestPermission ) === "function" ) {
-		// (optional) Do something before API request prompt.
-		return (DeviceMotionEvent as any).requestPermission();
+	if ((DeviceMotionEvent as any)?.requestPermission) {
+		await (DeviceMotionEvent as any).requestPermission();
 	}
 }
 

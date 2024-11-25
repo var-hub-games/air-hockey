@@ -13,3 +13,12 @@ body {
     color: white;
     overflow: hidden;
 }
+.canvas-box {
+    width: 100%;
+    height: 100%;
+    display: grid;
+}
+.canvas-box canvas {
+    width: 100%;
+    margin: auto;
+}
