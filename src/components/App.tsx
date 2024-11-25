@@ -4,7 +4,7 @@ import { integrity } from "../vm?varhub-bundle";
 import { GameRPC } from "../types.js";
 import { Game } from "./Game.js";
 
-const varhub = new Varhub("https://varhub.dpohvar.ru/");
+const varhub = new Varhub("https://varhub.flinbein.ru/");
 
 export const App: FC = () => {
 	const [foundRooms, setFoundRooms] = useState<null | Record<string, string>>(null);
