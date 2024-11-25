@@ -1,10 +1,11 @@
-import { Application, Container, Graphics, Ticker } from 'pixi.js';
+import { Application, Container, Graphics, Ticker, Text, TextStyle } from 'pixi.js';
 import { GameRPC, ROOM_EVENTS } from "./types.js";
 
 const SCALE = 10;
-export async function GamePixiApp (gameBoard: InstanceType<GameRPC["GameBoard"]>){
+export async function GamePixiApp (rpc: GameRPC){
 	const app = new Application();
 	await app.init({ background: '#1099bb', width: 130 * SCALE, height: 63 * SCALE });
+	const gameBoard = new rpc.GameBoard();
 	
 	const field = new Container({x: 65 * SCALE, y: 31 * SCALE});
 	const ballContainer = new Container();
@@ -23,15 +24,45 @@ export async function GamePixiApp (gameBoard: InstanceType<GameRPC["GameBoard"]>
 		new Graphics().circle(0, 0, 2 * SCALE).fill("#000080"),
 	);
 	
+	const textStyle = new TextStyle({
+		align: "left",
+		fontSize: 10 * SCALE,
+		fill: "#ffffff",
+		stroke: { color: '#ccc', width: 2, join: 'round' },
+		fontFamily: "monospace"
+	})
+	const redText = new Text({
+		text: String(rpc.state[0]),
+		style: textStyle,
+		x: -30 * SCALE,
+		y: -30 * SCALE,
+		anchor: {x: 0.5, y: 0},
+	});
+	
+	const blueText = new Text({
+		text: String(rpc.state[0]),
+		style: textStyle,
+		x: 30 * SCALE,
+		y: -30 * SCALE,
+		anchor: {x: 0.5, y: 0},
+	});
+	
+	rpc.on("state", () => {
+		redText.text = String(rpc.state[0]);
+		blueText.text = String(rpc.state[1]);
+	})
+	
 	field.addChild(
 		new Graphics().rect(-60 * SCALE, -30 * SCALE, 120 * SCALE, 60 * SCALE).stroke({ width: 2, color: "#000000" }), // border
 		new Graphics().rect(-60 * SCALE, -30 * SCALE, 60 * SCALE, 60 * SCALE).fill("#ffd0d0"), // field-red
 		new Graphics().rect(0, -30 * SCALE, 60 * SCALE, 60 * SCALE).fill("#d0d0ff"), // field-blue
 		new Graphics().rect(-65 * SCALE, -10 * SCALE, 5 * SCALE, 20 * SCALE).fill("#ffffff"), // goal-red
 		new Graphics().rect(60 * SCALE, -10 * SCALE, 5 * SCALE, 20 * SCALE).fill("#ffffff"), // goal-blue
+		redText,
+		blueText,
 		ballContainer,
 		redDiscContainer,
-		blueDiscContainer
+		blueDiscContainer,
 	);
 	app.stage.addChild(field);
 	

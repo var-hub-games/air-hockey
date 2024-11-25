@@ -3,10 +3,10 @@ import { GameRPC } from "../types.js";
 import { GamePixiApp} from "../GamePixiApp.js";
 
 export type BoardProps = {
-	gameBoard: InstanceType<GameRPC["GameBoard"]>
+	rpc: GameRPC
 }
-export const Board: FC<BoardProps> = ({gameBoard}) => {
-	const [appPromise] = useState(() => GamePixiApp(gameBoard));
+export const Board: FC<BoardProps> = ({rpc}) => {
+	const [appPromise] = useState(() => GamePixiApp(rpc));
 	return <Suspense fallback="loading...">
 		<BoardGraphics appPromise={appPromise}/>
 	</Suspense>

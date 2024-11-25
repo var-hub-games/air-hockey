@@ -14,7 +14,7 @@ export type GameProps = {
 	rpc: GameRPC
 }
 export const Game: FC<GameProps> = ({rpc, roomId}) => {
-	const [team, setTeam] = useState<null | 0 | 1>(null);
+	const [team, setTeam] = useState<null | 0 | 1 | 2>(null);
 	const [gameBoard, setGameBoard] = useState<null | InstanceType<GameRPC["GameBoard"]>>(null);
 	
 	const joinRed = useEffectEvent(async () => {
@@ -28,10 +28,10 @@ export const Game: FC<GameProps> = ({rpc, roomId}) => {
 	})
 	
 	const joinBoard = useEffectEvent(() => {
-		setGameBoard(() => new rpc.GameBoard);
+		setTeam(2);
 	})
 	
-	if (gameBoard) return <Board gameBoard={gameBoard} />
+	if (team === 2) return <Board rpc={rpc} />
 	if (team != null) return <Control team={team} rpc={rpc} />
 	
 	return <>
