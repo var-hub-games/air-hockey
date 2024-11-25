@@ -19,7 +19,7 @@ export const Control: FC<ControlProps> = ({rpc, team}) => {
 		rpc.on(ROOM_EVENTS.COLLISION, onCollision);
 		pointerRef.current = pointer;
 		pointer.addEventListener("point", ({x, y}) => {
-			void rpc.move(team, x, -y);
+			rpc.move.notify(team, x, -y);
 		});
 		return () => {
 			pointer.dispose();
