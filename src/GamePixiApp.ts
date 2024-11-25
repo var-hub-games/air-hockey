@@ -85,8 +85,9 @@ export async function GamePixiApp (rpc: GameRPC){
 		ballContainer.x += gameBoard.state[2]*SCALE * d;
 		ballContainer.y += gameBoard.state[3]*SCALE * d;
 		ballContainer.rotation += gameBoard.state[5] * d;
-		const s = app.renderer.width
 	});
+	
+	app.stage.on("destroyed", () => gameBoard.close())
 	
 	return app;
 }
