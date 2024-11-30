@@ -1,5 +1,10 @@
+/// <reference path="../node_modules/vite/client.d.ts" />
+
 import { Application, Container, Graphics, Ticker, Text, TextStyle } from 'pixi.js';
 import { GameRPC, ROOM_EVENTS } from "./types.js";
+import coinSoundSrc from "./res/coin.wav?url";
+import tapSoundSrc from "./res/tap.wav?url";
+import drumSoundSrc from "./res/drum.wav?url";
 
 const SCALE = 10;
 export async function GamePixiApp (rpc: GameRPC){
@@ -66,8 +71,16 @@ export async function GamePixiApp (rpc: GameRPC){
 	);
 	app.stage.addChild(field);
 	
-	gameBoard.on(ROOM_EVENTS.COLLISION, (withBall) => {
-		console.log("collision", {withBall});
+	gameBoard.on(ROOM_EVENTS.COLLISION, (ballWithDisc) => {
+		const audio  = new Audio(ballWithDisc ? drumSoundSrc : tapSoundSrc);
+		audio.play();
+		console.log("collision", {interactive: ballWithDisc});
+	});
+	
+	gameBoard.on(ROOM_EVENTS.SCORE, (team) => {
+		const audio  = new Audio(coinSoundSrc);
+		audio.play();
+		console.log("score", {team});
 	});
 	
 	gameBoard.on("state", ([ballX, ballY, _ballVelX, _ballVelY, ballAngle, _ballAngleVel, redX, redY, blueX, blueY]) => {

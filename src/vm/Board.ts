@@ -20,7 +20,10 @@ export type BoardState = [
 	redDiscRelX: number, redDiscRelY: number,
 	blueDiscRelX: number, blueDiscRelY: number,
 ]
-export class Board extends RPCSource.with({}, [0,0,0,0,0,0,-30,0,30,0] as BoardState)<{[ROOM_EVENTS.COLLISION]: [boolean]}> {
+export class Board extends RPCSource.with({}, [0,0,0,0,0,0,-30,0,30,0] as BoardState)<{
+	[ROOM_EVENTS.COLLISION]: [interactive: boolean],
+	[ROOM_EVENTS.SCORE]: [team: 0|1]
+}> {
 	world: RAPIER.World;
 	ball: RAPIER.RigidBody;
 	redDisc: RAPIER.RigidBody;
@@ -101,12 +104,14 @@ export class Board extends RPCSource.with({}, [0,0,0,0,0,0,-30,0,30,0] as BoardS
 			const handle2 = event.collider2();
 			const {x, y} = event.totalForce();
 			const forcePow = x*x + y*y;
-			if (forcePow < 1000000) return;
+			if (forcePow < 10000000) return;
 			const handles = [handle1, handle2];
 			const gameColliders = [this.ballColliderHandle, this.redColliderHandle, this.blueColliderHandle];
 			const ballCollision = handles.includes(this.ballColliderHandle);
+			if (!ballCollision) return;
+			const discCollision = handles.includes(this.redColliderHandle) || handles.includes(this.blueColliderHandle);
 			if (gameColliders.includes(handle1) || gameColliders.includes(handle2)) {
-				this.emit(ROOM_EVENTS.COLLISION, ballCollision);
+				this.emit(ROOM_EVENTS.COLLISION, ballCollision && discCollision);
 			}
 			if (handles.includes(this.redColliderHandle)) {
 				(RPCSource.default as any).emit(ROOM_EVENTS.COLLISION, 0)
@@ -130,6 +135,7 @@ export class Board extends RPCSource.with({}, [0,0,0,0,0,0,-30,0,30,0] as BoardS
 			this.ball.setTranslation({x: 0, y: -10000}, true);
 			this.ball.setLinvel({x: 0, y: 0}, true);
 			this.ball.setAngvel(0, true);
+			this.emit(ROOM_EVENTS.SCORE, x > 0 ? 1 : 0);
 			setTimeout(() => {
 				this.ball.setTranslation({x: 0, y: -10 + 20*Math.random() }, true);
 			}, 3000);
